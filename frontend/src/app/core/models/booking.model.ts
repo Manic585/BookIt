@@ -1,22 +1,3 @@
-export interface InventoryItem {
-  id: string;
-  referenceId: string;
-  seatClass: string;
-  label: string;
-  availableDate: string;
-  status: string;
-  price: number;
-}
-
-export interface AvailabilityResponse {
-  referenceId: string;
-  date: string;
-  totalAvailable: number;
-  items: InventoryItem[];
-  page: number;
-  totalPages: number;
-}
-
 export interface CreateBookingRequest {
   referenceId: string;
   bookingType: 'CINEMA';

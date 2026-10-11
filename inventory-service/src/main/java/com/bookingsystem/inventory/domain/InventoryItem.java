@@ -42,6 +42,14 @@ public class InventoryItem {
     @Column(nullable = false, length = 50)
     private String label; // "Row E Seat 7", "Recliner R3"
 
+    /** Row identifier for seat-map rendering, e.g. "A", "B" */
+    @Column(name = "seat_row", length = 5)
+    private String seatRow;
+
+    /** Seat number within the row, e.g. 1, 2, 3 */
+    @Column(name = "seat_number")
+    private Integer seatNumber;
+
     @Column(nullable = false)
     private LocalDate availableDate;
 

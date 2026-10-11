@@ -53,4 +53,7 @@ public interface InventoryRepository extends JpaRepository<InventoryItem, UUID> 
 
     long countByReferenceIdAndAvailableDateAndStatus(
             UUID referenceId, LocalDate date, InventoryItem.Status status);
+
+    List<InventoryItem> findByReferenceIdAndAvailableDateOrderBySeatRowAscSeatNumberAsc(
+            UUID referenceId, LocalDate date);
 }

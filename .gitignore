@@ -1,6 +1,5 @@
 # Maven build output
 target/
-*/target/
 
 # IDE
 .idea/
@@ -17,13 +16,29 @@ logs/
 # Environment / secrets
 .env
 .env.*
+!.env.example
+!.env.sample
+!.env.template
 
 # Frontend
-frontend/node_modules/
+node_modules/
 frontend/dist/
+frontend/out-tsc/
+frontend/.angular/
+frontend/node_modules/
+frontend/*
+*.tsbuildinfo
+coverage/
+.nyc_output/
+
+# Local Redis persistence
+dump.rdb
+appendonly.aof
+appendonlydir/
 
 # OS
 .DS_Store
 Thumbs.db
 
+# Local service configuration (existing project convention)
 /*/src/main/resources/application.yml

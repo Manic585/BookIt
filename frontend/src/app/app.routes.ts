@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/search', pathMatch: 'full' },
+  { path: '', redirectTo: '/movies', pathMatch: 'full' },
   {
     path: 'auth',
     children: [
@@ -17,9 +17,19 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'search',
+    path: 'movies',
     canActivate: [authGuard],
-    loadComponent: () => import('./features/search/search.component').then(m => m.SearchComponent)
+    loadComponent: () => import('./features/movies/list/movie-list.component').then(m => m.MovieListComponent)
+  },
+  {
+    path: 'movies/:movieId',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/movies/detail/movie-detail.component').then(m => m.MovieDetailComponent)
+  },
+  {
+    path: 'showtimes/:showtimeId/seats',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/seats/seat-map.component').then(m => m.SeatMapComponent)
   },
   {
     path: 'booking/confirm',
@@ -37,5 +47,5 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./features/ai/ai-chat.component').then(m => m.AiChatComponent)
   },
-  { path: '**', redirectTo: '/search' }
+  { path: '**', redirectTo: '/movies' }
 ];
