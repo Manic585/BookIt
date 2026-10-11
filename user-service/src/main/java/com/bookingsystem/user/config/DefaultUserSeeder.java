@@ -5,12 +5,14 @@ import com.bookingsystem.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Profile("local")
 public class DefaultUserSeeder implements CommandLineRunner {
 
     private static final String DEFAULT_EMAIL = "customer@bookingsystem.com";
