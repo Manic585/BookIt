@@ -1,0 +1,73 @@
+<div class="page">
+  @if (showtime(); as s) {
+    <a [routerLink]="['/movies', s.movie.id]" class="back">← {{ s.movie.title }}</a>
+
+    <header class="showtime-header">
+      <h1>{{ s.movie.title }}</h1>
+      <p class="meta">{{ s.theaterName }}, {{ s.theaterCity }} · {{ s.screenName }} · {{ s.showDate }} · {{ s.showTime | slice:0:5 }}</p>
+    </header>
+  }
+
+  @if (loading()) {
+    <div class="status">Loading seat map...</div>
+  }
+
+  @if (error()) {
+    <div class="status error">{{ error() }}</div>
+  }
+
+  @if (seatMap(); as map) {
+    <div class="screen-indicator">
+      <div class="screen-bar"></div>
+      <span>All eyes this way</span>
+    </div>
+
+    <div class="sections">
+      @for (section of map.sections; track section.seatClass) {
+        <div class="section">
+          <div class="section-header">
+            <span class="section-name">{{ section.seatClass }}</span>
+            <span class="section-price">₹{{ section.price | number:'1.0-0' }}</span>
+          </div>
+          <div class="rows">
+            @for (row of section.rows; track row.row) {
+              <div class="row">
+                <span class="row-label">{{ row.row }}</span>
+                <div class="seats">
+                  @for (seat of row.seats; track seat.id) {
+                    <button
+                      class="seat"
+                      [class.available]="seat.status === 'AVAILABLE'"
+                      [class.taken]="seat.status !== 'AVAILABLE'"
+                      [class.selected]="isSelected(seat.id)"
+                      [disabled]="seat.status !== 'AVAILABLE'"
+                      [title]="seat.label"
+                      (click)="toggleSeat(seat.id, seat.label, section.seatClass, section.price, seat.status)">
+                      {{ seat.seatNumber }}
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="legend">
+      <span><i class="dot available"></i> Available</span>
+      <span><i class="dot selected"></i> Selected</span>
+      <span><i class="dot taken"></i> Taken</span>
+    </div>
+  }
+
+  @if (selectedSeats().length > 0) {
+    <div class="footer-bar">
+      <div class="summary">
+        <strong>{{ selectedSeats().length }}</strong> seat{{ selectedSeats().length > 1 ? 's' : '' }} selected
+      </div>
+      <div class="total">₹{{ totalPrice() | number:'1.2-2' }}</div>
+      <button class="proceed-btn" (click)="proceed()">Proceed →</button>
+    </div>
+  }
+</div>

@@ -1,0 +1,90 @@
+<div class="chat-page">
+  <div class="chat-header">
+    <div class="header-left">
+      <span class="bot-icon">🤖</span>
+      <div>
+        <h2>BookIt AI Assistant</h2>
+        <p class="subtitle">Powered by GPT-4o-mini · Find shows, book seats, get recommendations</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="clear-btn" (click)="clearConversation()" title="New conversation">🗑 Clear</button>
+      <a class="back-btn" routerLink="/movies">← Movies</a>
+    </div>
+  </div>
+
+  <div class="messages-container" #messagesContainer>
+    <!-- Welcome message -->
+    @if (messages().length === 0) {
+      <div class="welcome">
+        <div class="welcome-icon">🤖</div>
+        <h3>Hi! I'm BookIt AI</h3>
+        <p>I can help you find movie shows and cinema seats — and answer your booking questions.</p>
+        <div class="quick-prompts">
+          @for (prompt of quickPrompts; track prompt) {
+            <button (click)="sendQuickPrompt(prompt)">{{ prompt }}</button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Messages -->
+    <div class="message-list">
+      @for (msg of messages(); track msg) {
+        <div
+          class="message"
+          [class.user-message]="msg.role === 'user'"
+          [class.assistant-message]="msg.role === 'assistant'">
+          <div class="message-avatar">{{ msg.role === 'user' ? '👤' : '🤖' }}</div>
+          <div class="message-body">
+            <div class="message-content" [innerHTML]="formatMessage(msg.content)"></div>
+            <div class="message-time">{{ msg.timestamp | date:'HH:mm' }}</div>
+          </div>
+        </div>
+      }
+
+      <!-- Typing indicator -->
+      @if (loading()) {
+        <div class="message assistant-message">
+          <div class="message-avatar">🤖</div>
+          <div class="message-body">
+            <div class="typing-indicator">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Suggested actions -->
+  @if (suggestions().length > 0 && !loading()) {
+    <div class="suggestions">
+      @for (action of suggestions(); track action) {
+        <button
+          class="suggestion-chip"
+          (click)="sendQuickPrompt(action)">
+          {{ action }}
+        </button>
+      }
+    </div>
+  }
+
+  <!-- Input area -->
+  <div class="input-area">
+    <textarea
+      [(ngModel)]="inputMessage"
+      placeholder="Ask me anything — 'Find a recliner seat for Pathaan tonight', 'What can I book?'..."
+      (keydown.enter)="onEnterKey($event)"
+      [disabled]="loading()"
+      rows="1"
+      class="message-input"
+    #inputRef></textarea>
+    <button class="send-btn"
+      (click)="sendMessage()"
+      [disabled]="loading() || !inputMessage.trim()">
+      {{ loading() ? '⏳' : '➤' }}
+    </button>
+  </div>
+  <div class="input-hint">Press Enter to send · Shift+Enter for new line</div>
+</div>

@@ -1,0 +1,12 @@
+@if (auth.isAuthenticated()) {
+  <nav class="navbar">
+    <a class="brand" routerLink="/movies">🎬 BookIt</a>
+    <div class="nav-links">
+      <a routerLink="/movies" routerLinkActive="active">Movies</a>
+      <a routerLink="/dashboard" routerLinkActive="active">My Bookings</a>
+      <a routerLink="/ai-assistant" routerLinkActive="active" class="ai-link">🤖 AI Assistant</a>
+      <button class="logout-btn" (click)="auth.logout()">Sign Out</button>
+    </div>
+  </nav>
+}
+<router-outlet />

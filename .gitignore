@@ -26,7 +26,6 @@ frontend/dist/
 frontend/out-tsc/
 frontend/.angular/
 frontend/node_modules/
-frontend/*
 *.tsbuildinfo
 coverage/
 .nyc_output/

@@ -1,0 +1,71 @@
+<div class="page">
+  <a routerLink="/movies" class="back">← All Movies</a>
+
+  @if (loadingMovie()) {
+    <div class="status">Loading...</div>
+  }
+
+  @if (error()) {
+    <div class="status error">{{ error() }}</div>
+  }
+
+  @if (movie(); as m) {
+    <div class="hero" [style.backgroundImage]="'url(' + m.bannerUrl + ')'">
+      <div class="hero-overlay">
+        <img class="poster" [src]="m.posterUrl" [alt]="m.title" />
+        <div class="hero-info">
+          <h1>{{ m.title }}</h1>
+          <p class="tags">
+            <span class="badge">{{ m.rating }}</span>
+            {{ m.genre }} · {{ m.language }} · {{ m.durationMinutes }} min
+          </p>
+          <p class="description">{{ m.description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="booking-section">
+      <h2>Select a Date</h2>
+      <div class="date-strip">
+        @for (opt of dateOptions; track opt.value) {
+          <button
+            class="date-chip"
+            [class.selected]="selectedDate() === opt.value"
+            (click)="selectDate(opt.value)">
+            <span class="weekday">{{ opt.weekday }}</span>
+            <span class="day">{{ opt.day }}</span>
+          </button>
+        }
+      </div>
+
+      @if (loadingShowtimes()) {
+        <div class="status">Loading showtimes...</div>
+      }
+
+      @if (!loadingShowtimes() && theaters().length === 0) {
+        <div class="status">No showtimes available on this date.</div>
+      }
+
+      @if (!loadingShowtimes() && theaters().length > 0) {
+        <div class="theater-list">
+          @for (theater of theaters(); track theater.theaterId) {
+            <div class="theater-card">
+              <div class="theater-header">
+                <h3>{{ theater.theaterName }}</h3>
+                <span class="city">{{ theater.theaterCity }}</span>
+              </div>
+              <div class="showtime-chips">
+                @for (slot of theater.showtimes; track slot.showtimeId) {
+                  <button class="showtime-chip" (click)="openShowtime(slot.showtimeId)">
+                    <span class="time">{{ slot.showTime | slice:0:5 }}</span>
+                    <span class="screen">{{ slot.screenName }}</span>
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  }
+</div>

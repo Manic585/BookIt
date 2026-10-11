@@ -1,0 +1,33 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h1>Create Account</h1>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="field">
+          <label>First Name</label>
+          <input formControlName="firstName" />
+        </div>
+        <div class="field">
+          <label>Last Name</label>
+          <input formControlName="lastName" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" formControlName="email" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" formControlName="password" />
+        <span class="hint">Minimum 8 characters</span>
+      </div>
+      @if (error) {
+        <div class="error">{{ error }}</div>
+      }
+      <button type="submit" [disabled]="form.invalid || loading">
+        {{ loading ? 'Creating account...' : 'Create Account' }}
+      </button>
+    </form>
+    <p>Have an account? <a routerLink="/auth/login">Sign in</a></p>
+  </div>
+</div>

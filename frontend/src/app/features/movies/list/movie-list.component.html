@@ -1,0 +1,32 @@
+<div class="page">
+  <header class="page-header">
+    <h1>Now Showing</h1>
+    <p class="subtitle">Pick a movie to see showtimes near you</p>
+  </header>
+
+  @if (loading()) {
+    <div class="status">Loading movies...</div>
+  }
+
+  @if (error()) {
+    <div class="status error">{{ error() }}</div>
+  }
+
+  @if (!loading() && !error()) {
+    <div class="movie-grid">
+      @for (movie of movies(); track movie.id) {
+        <div class="movie-card" (click)="openMovie(movie)">
+          <div class="poster-wrap">
+            <img [src]="movie.posterUrl" [alt]="movie.title" loading="lazy" />
+            <span class="rating-badge">{{ movie.rating }}</span>
+          </div>
+          <div class="movie-info">
+            <h3>{{ movie.title }}</h3>
+            <p class="meta">{{ movie.genre }} · {{ movie.language }}</p>
+            <p class="meta">{{ movie.durationMinutes }} min</p>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
