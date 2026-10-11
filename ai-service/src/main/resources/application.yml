@@ -1,0 +1,32 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: ai-service
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.5
+          max-tokens: 1024
+
+services:
+  inventory-url: ${INVENTORY_SERVICE_URL:http://localhost:8082}
+  booking-url: ${BOOKING_SERVICE_URL:http://localhost:8083}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+logging:
+  level:
+    com.bookingsystem.ai: DEBUG
+    org.springframework.ai: INFO

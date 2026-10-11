@@ -39,5 +39,3 @@ appendonlydir/
 .DS_Store
 Thumbs.db
 
-# Local service configuration (existing project convention)
-/*/src/main/resources/application.yml
